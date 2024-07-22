@@ -47,7 +47,10 @@ class Tarea{
           botonEstado.appendChild(document.createElement("span"));
 
           botonEstado.addEventListener("click",()=>{
-            this.actualizarEstado().then(()=> botonEstado.classList.toggle("terminada"));
+            this.actualizarEstado()
+            .then(()=> botonEstado.classList.toggle("terminada"))
+            
+            .catch(()=> console.log("...mostrar error al usuario"));
         });
 
 
@@ -64,12 +67,27 @@ class Tarea{
           contenedor.appendChild(this.DOM);
 
     }
-    actualizarTexto(){
+    async actualizarTexto(){
         if(this.editando){
             
             let textoTemporal = this.DOM.children[1].value.trim();
             if(textoTemporal !="" && textoTemporal != this.texto){
-                this.texto = textoTemporal;
+                let {error}= await fetch("http://localhost:4000/tareas/actualizar"+ this.id,{
+                    method:"PUT",
+                    body: JSON.stringify({tarea: textoTemporal}),
+                    headers:{
+
+                  "Content-type" :"application/json"
+                    }
+                }).then(respuesta => respuesta.json());
+
+                if(!error){
+                    this.texto = textoTemporal;
+                }else{
+                    console.log("...error al usuario");
+                }
+              
+                
             }
             this.DOM.children[1].classList.remove("visible");
             this.DOM.children[0].innerText=this.texto;
@@ -90,14 +108,31 @@ class Tarea{
         this.editando =!this.editando;
 
     }
+
     actualizarEstado(){
         return new Promise ((ok,ko)=>{
-            ok();
+            fetch("http://localhost:4000/tareas/actualizar/2/" + this.id,{
+                method:"PUT"
+            })
+            .then(respuesta => respuesta.json())
+            .then (({error})=>{
+                !error ? ok() : ko();
+            });
 
         });
     }
     borrarTarea(){
-        this.DOM.remove();
+        fetch("http://localhost:4000/tareas/borrar/"+this.id, {
+            method:"DELETE"
+        })
+        .then(respuesta =>respuesta.json())
+        .then(({resultado,error}) =>{
+            if(!error){
+                return this.DOM.remove();
+            }
+            console.log("...mostrar error a usuario");
+            
+        });
        
     }
 }
