@@ -1,0 +1,8 @@
+
+EXTERNO
+postgresql://bbdd_tareas_16oq_user:GZeSdgRoo9DcFaG1MCHwMrkDCJoXxVtL@dpg-cqf1ck0gph6c73b3k3n0-a.frankfurt-postgres.render.com/bbdd_tareas_16oq
+
+
+
+INTERNO
+postgresql://bbdd_tareas_16oq_user:GZeSdgRoo9DcFaG1MCHwMrkDCJoXxVtL@dpg-cqf1ck0gph6c73b3k3n0-a/bbdd_tareas_16oq

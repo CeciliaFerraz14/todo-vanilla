@@ -72,7 +72,7 @@ class Tarea{
             
             let textoTemporal = this.DOM.children[1].value.trim();
             if(textoTemporal !="" && textoTemporal != this.texto){
-                let {error}= await fetch("http://localhost:4000/tareas/actualizar"+ this.id,{
+                let {error}= await fetch("https://api-todo-postgress.onrender.com/tareas/actualizar"+ this.id,{
                     method:"PUT",
                     body: JSON.stringify({tarea: textoTemporal}),
                     headers:{
@@ -111,7 +111,7 @@ class Tarea{
 
     actualizarEstado(){
         return new Promise ((ok,ko)=>{
-            fetch("http://localhost:4000/tareas/actualizar/2/" + this.id,{
+            fetch("https://api-todo-postgress.onrender.com/tareas/actualizar/2/" + this.id,{
                 method:"PUT"
             })
             .then(respuesta => respuesta.json())
@@ -122,7 +122,7 @@ class Tarea{
         });
     }
     borrarTarea(){
-        fetch("http://localhost:4000/tareas/borrar/"+this.id, {
+        fetch("https://api-todo-postgress.onrender.com/tareas/borrar/"+this.id, {
             method:"DELETE"
         })
         .then(respuesta =>respuesta.json())
